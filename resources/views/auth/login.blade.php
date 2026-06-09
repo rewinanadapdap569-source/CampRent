@@ -4,12 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampRent - Masuk ke Akun</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -41,6 +38,20 @@
             box-shadow: 0 4px 15px rgba(21, 115, 71, 0.2);
             margin: 0 auto 1rem auto;
         }
+        .form-control {
+            border-radius: 10px;
+            padding: 0.6rem 1rem;
+        }
+        /* Penyesuaian background input password seperti mockup gambar */
+        .bg-password-field {
+            background-color: #eef2f7 !important;
+            border-color: transparent;
+        }
+        .bg-password-field:focus {
+            background-color: #ffffff !important;
+            border-color: #157347;
+            box-shadow: 0 0 0 0.25rem rgba(21, 115, 71, 0.15);
+        }
         .form-control:focus {
             border-color: #157347;
             box-shadow: 0 0 0 0.25rem rgba(21, 115, 71, 0.15);
@@ -51,6 +62,11 @@
             border-radius: 12px;
             padding: 0.75rem;
             font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .btn-login:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -65,26 +81,25 @@
             <p class="text-muted small">Masuk untuk mengelola rental alat campingmu</p>
         </div>
 
-        <!-- Form Login diarahkan ke AuthController -->
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login.post') }}">
             @csrf
 
-            <!-- Input Email -->
             <div class="mb-3">
                 <label for="email" class="form-label small fw-semibold text-secondary">Alamat Email</label>
                 <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required autofocus placeholder="nama@email.com">
+                
                 @if($errors->has('email'))
-                    <span class="text-danger small mt-1 d-block">{{ $errors->first('email') }}</span>
+                    <span class="text-danger small mt-1 d-block" style="font-size: 13px;">
+                        {{ $errors->first('email') }}
+                    </span>
                 @endif
             </div>
 
-            <!-- Input Password -->
             <div class="mb-4">
                 <label for="password" class="form-label small fw-semibold text-secondary">Password</label>
-                <input type="password" id="password" name="password" class="form-control" required placeholder="Masukkan password">
+                <input type="password" id="password" name="password" class="form-control bg-password-field" required placeholder="••••••">
             </div>
 
-            <!-- Button Submit -->
             <button type="submit" class="btn btn-primary btn-login w-100 text-white mb-3">Masuk</button>
 
             <div class="text-center">

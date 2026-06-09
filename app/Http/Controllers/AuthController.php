@@ -13,6 +13,9 @@ class AuthController extends Controller
     // 1. Menampilkan Halaman Register
     public function showRegister()
     {
+        if (Auth::check()) {
+            return $this->redirectByRole(Auth::user());
+        }
         return view('auth.register');
     }
 
@@ -31,23 +34,23 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'nohp' => $request->nohp,
-            'role' => 'customer',
+            'role' => 'customer', // Default pendaftar baru adalah customer
         ]);
 
         // Otomatis login setelah berhasil mendaftar
         Auth::login($user);
+        $request->session()->regenerate();
 
-        // Pengalihan halaman otomatis berdasarkan role
-        if ($user->role === 'admin') {
-            return redirect('/dashboard-admin');
-        }
-
-        return redirect('/dashboard-pelanggan');
+        // Alihkan halaman berdasarkan role
+        return $this->redirectByRole($user);
     }
 
-    // 3. Menampilkan Halaman Login (Jika nanti kamu buat custom login)
+    // 3. Menampilkan Halaman Login
     public function showLogin()
     {
+        if (Auth::check()) {
+            return $this->redirectByRole(Auth::user());
+        }
         return view('auth.login');
     }
 
@@ -62,12 +65,8 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            // Cek role setelah berhasil login
-            if (Auth::user()->role === 'admin') {
-                return redirect()->intended('/dashboard-admin');
-            }
-
-            return redirect()->intended('/dashboard-pelanggan');
+            // PERBAIKAN: Menggunakan fungsi pengalihan role yang aman
+            return $this->redirectByRole(Auth::user());
         }
 
         return back()->withErrors([
@@ -83,6 +82,16 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
+    }
+
+    // 💡 Fungsi Tambahan: Menghindari Hardcode URL agar tidak 404 lagi
+    private function redirectByRole($user)
+    {
+        if ($user->role === 'admin') {
+            return redirect()->route('pages.dashboard'); // Mengarah ke /admin/dashboard
+        }
+        
+        return redirect()->route('customer.katalog'); // Mengarah ke /katalog
     }
 }

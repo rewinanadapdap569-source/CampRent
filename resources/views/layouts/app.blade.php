@@ -3,250 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'CampRent')</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>@yield('title', 'CampRent - Sistem Rental Alat Camping')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
-   
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         :root {
-            --primary: #16a34a;
-            --primary-dark: #14532d;
-            --primary-light: #22c55e;
-            --sidebar-start: #0f172a;
-            --sidebar-end: #14532d;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --border: #e5e7eb;
-            --text: #111827;
-            --text-light: #6b7280;
+            --primary: #157347; --primary-dark: #14532d; --primary-light: #20c997;
+            --sidebar-start: #0f172a; --sidebar-end: #1e293b;
+            --background: #f8fafc; --card: #ffffff; --text: #0f172a; --text-light: #64748b; --border: #e2e8f0;
         }
-
-        body {
-            background: var(--bg);
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* ==========================
-           SIDEBAR STYLING
-        ========================== */
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, var(--sidebar-start), var(--sidebar-end));
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,.15);
-            z-index: 1000;
-        }
-
-        .logo {
-            padding: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid rgba(255,255,255,.08);
-        }
-
-        .logo img {
-            width: 42px;
-            height: 42px;
-            object-fit: contain;
-        }
-
-        .logo h2 {
-            font-size: 22px;
-            color: white;
-            font-weight: 700;
-        }
-
-        .logo p {
-            color: #cbd5e1;
-            font-size: 12px;
-        }
-
-        .menu {
-            padding: 20px 15px;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: #e2e8f0;
-            padding: 14px 15px;
-            border-radius: 14px;
-            margin-bottom: 8px;
-            transition: .3s;
-        }
-
-        .menu a i {
-            width: 20px;
-            text-align: center;
-        }
-
-        .menu a:hover {
-            background: rgba(255,255,255,.08);
-            transform: translateX(5px);
-            color: white;
-        }
-
-        .menu a.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 10px 25px rgba(34,197,94,.3);
-        }
-
-        /* ==========================
-           MAIN CONTENT AREA
-        ========================== */
-        .main {
-            flex: 1;
-            margin-left: 280px; /* Memberi ruang agar tidak tertutup sidebar fixed */
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .header {
-            height: 80px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 35px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .header h1 {
-            font-size: 24px;
-            color: var(--text);
-            font-weight: 700;
-        }
-
-        .user {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-        }
-
-        .user h4 {
-            font-size: 14px;
-            color: var(--text);
-        }
-
-        .user p {
-            color: var(--text-light);
-            font-size: 12px;
-        }
-
-        .content {
-            padding: 30px;
-            flex: 1;
-        }
-
-        /* Responsive */
-        @media(max-width: 768px) {
-            .sidebar {
-                display: none; /* Kamu bisa tambah burger menu nanti */
-            }
-            .main {
-                margin-left: 0;
-            }
-        }
-        <style>
-    :root {
-        --sidebar-bg: #1B4332;
-        --accent: #D4A373;
-        --text-light: #ffffff;
-    }
-
-    .sidebar {
-        width: 260px;
-        background: var(--sidebar-bg);
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        color: white;
-        padding: 20px;
-    }
-
-    .brand {
-        font-size: 24px;
-        font-weight: 700;
-        padding: 20px 10px;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .menu { display: flex; flex-direction: column; gap: 8px; flex: 1; }
-
-    .menu-item {
-        padding: 12px 16px;
-        color: rgba(255,255,255,0.7);
-        text-decoration: none;
-        border-radius: 10px;
-        transition: 0.3s;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .menu-item:hover, .menu-item.active {
-        background: var(--accent);
-        color: white;
-    }
-
-    .logout-btn {
-        width: 100%;
-        padding: 12px;
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.2);
-        color: white;
-        border-radius: 10px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
+        body { background-color: var(--background); color: var(--text); min-height: 100vh; }
+        .wrapper { display: block; position: relative; min-height: 100vh; }
+        .main-content { margin-left: 280px; min-height: 100vh; display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .main-header { background: var(--card); height: 80px; padding: 0 35px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+        .main-header h1 { font-size: 20px; font-weight: 700; color: var(--text); margin: 0; }
+        .user-profile { display: flex; align-items: center; gap: 12px; }
+        .user-profile img { width: 40px; height: 40px; border-radius: 50px; object-fit: cover; }
+        .user-info h4 { font-size: 14px; font-weight: 600; color: var(--text); margin: 0; }
+        .user-info p { margin: 0; color: var(--text-light); font-size: 12px; }
+        .content-body { padding: 35px; flex: 1; }
+        @media(max-width: 992px) { .main-content { margin-left: 0; } }
     </style>
+    @stack('styles')
 </head>
 <body>
-    <div class="wrapper" style="display: flex;">
-        
+    <div class="wrapper">
         @include('partials.sidebarr') 
 
-        <main class="main-content">
-            @yield('content')
-        </main>
-        
+        <div class="main-content">
+            <header class="main-header">
+                <h1>@yield('page-title', 'Dashboard')</h1>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Admin') }}&background=157347&color=fff" alt="Avatar">
+                    <div class="user-info">
+                        <h4>{{ Auth::user()->name ?? 'Admin' }}</h4>
+                        <p class="text-capitalize">{{ Auth::user()->role ?? 'Administrator' }}</p>
+                    </div>
+                </div>
+            </header>
+            <main class="content-body">
+                @yield('content')
+            </main>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
 </body>
 </html>
