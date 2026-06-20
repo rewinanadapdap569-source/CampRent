@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Alat;   // Menggunakan model Gear sesuai nama folder kelompokmu
+use App\Models\Alat;   // Menggunakan model Alat sesuai proyekmu
 use App\Models\Rental;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -113,5 +113,33 @@ class RentalController extends Controller
         ]);
 
         return redirect()->route('admin.rental.index')->with('success', 'Detail transaksi berhasil diperbarui!');
+    }
+
+
+    // ==================== TAMBAHAN MODUL PENGEMBALIAN ====================
+
+    // 7. Tampilkan Daftar Alat yang Sedang Disewa Pelanggan
+    public function indexReturn()
+    {
+        // Menyaring data transaksi yang statusnya hanya 'Disewa'
+        $daftarDisewa = Rental::with(['user', 'gear'])->where('status', 'Disewa')->latest()->get();
+        return view('admin.return.index', compact('daftarDisewa'));
+    }
+
+    // 8. Proses Terima Pengembalian Fisik Alat dan Pemulihan Stok
+    public function processReturn($id)
+    {
+        $rental = Rental::findOrFail($id);
+        $gear = Alat::findOrFail($rental->gear_id); // Menggunakan model Alat sesuai proyekmu
+
+        // Tambahkan kembali stok alat camping ke database
+        $gear->increment('stok', $rental->jumlah_set);
+
+        // Ubah status transaksi penyewaan dari 'Disewa' menjadi 'Selesai'
+        $rental->update([
+            'status' => 'Selesai'
+        ]);
+
+        return redirect()->route('admin.return.index')->with('success', 'Alat camping sukses dikembalikan! Stok gudang bertambah otomatis.');
     }
 }
