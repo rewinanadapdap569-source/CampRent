@@ -166,7 +166,7 @@
             <span>Penyewaan</span>
         </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('return.index') }}" class="menu-item">
             <i class="fa-solid fa-arrow-rotate-left"></i>
             <span>Pengembalian</span>
         </a>

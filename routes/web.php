@@ -58,5 +58,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/rentals/{id}/edit', [RentalController::class, 'editAdmin'])->name('rental.edit');
         Route::put('/rentals/{id}', [RentalController::class, 'updateAdmin'])->name('rental.update');
     });
+    Route::get('/returns', [RentalController::class, 'indexReturn'])->name('return.index');
+    
+    // Proses tombol ketika diklik untuk memulangkan stok ke gudang
+    Route::patch('/returns/{id}/process', [RentalController::class, 'processReturn'])->name('return.process');
      });
    
