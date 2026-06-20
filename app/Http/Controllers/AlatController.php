@@ -33,39 +33,43 @@ class AlatController extends Controller
      * STORE: Memproses data dari form tambah alat dan menyimpannya ke database.
      */
     public function store(Request $request)
-    {
-        // 1. Validasi inputan form agar data wajib diisi dengan benar
-        $request->validate([
-            'nama_alat'   => 'required|string|max:255',
-            'kategori'    => 'required|in:Tenda,Carrier,Sleeping Bag,Kompor,Lampu,Matras',
-            'harga_sewa'  => 'required|numeric|min:0',
-            'stok'        => 'required|integer|min:0',
-            'gambar'      => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Maksimal 2MB
-        ]);
+{
+    // 1. Validasi Input (Pastikan kategori/kategori_id wajib diisi!)
+    $request->validate([
+        'nama_alat'   => 'required|string|max:255',
+        'kategori'    => 'required', // <-- WAJIB ADA! Jika sudah pakai relasi, ganti jadi 'kategori_id' => 'required|exists:kategoris,id'
+        'harga_sewa'  => 'required|numeric|min:0',
+        'stok'        => 'required|integer|min:0',
+        'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+    ]);
 
-        // 2. Handle upload gambar jika ada
-        $namaGambar = null;
-        if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-            // Menyimpan ke folder 'public/images/alat' di dalam storage
-            $namaGambar = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('images/alat'), $namaGambar);
-        }
-
-        // 3. Simpan data ke database tabel 'alats'
-        Alat::create([
-            'nama_alat'  => $request->nama_alat,
-            'kategori'   => $request->kategori,
-            'harga_sewa' => $request->harga_sewa,
-            'stok'       => $request->stok,
-            'status'     => $request->stok > 0 ? 'Tersedia' : 'Habis',
-            'gambar'     => $namaGambar
-        ]);
-
-        // Redirect kembali ke tabel daftar alat dengan pesan sukses
-        return redirect()->route('alat.index')->with('success', 'Alat camping baru berhasil ditambahkan!');
+    // 2. Logika Upload Gambar
+    $namaGambar = null;
+    if ($request->hasFile('gambar')) {
+        $file = $request->file('gambar');
+        $namaGambar = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('images/alat'), $namaGambar);
     }
 
+    // 3. Simpan data ke database tabel 'alats'
+    Alat::create([
+        'nama_alat'   => $request->nama_alat,
+        
+        // JIKA MASIH PAKAI TEKS BIASA:
+        'kategori'    => $request->kategori, 
+        
+        // JIKA SUDAH PAKAI RELASI ID ANGKA (Saran Terbaik):
+        // 'kategori_id' => $request->kategori, 
+
+        'harga_sewa'  => $request->harga_sewa,
+        'stok'        => $request->stok,
+        'status'      => $request->stok > 0 ? 'Tersedia' : 'Kosong',
+        'gambar'      => $namaGambar
+    ]);
+
+    // Redirect kembali ke tabel daftar alat dengan pesan sukses
+    return redirect()->route('alat.index')->with('success', 'Alat camping baru berhasil ditambahkan!');
+}
     /**
      * EDIT: Menampilkan halaman form untuk mengubah data alat camping.
      */

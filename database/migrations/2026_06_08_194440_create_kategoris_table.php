@@ -6,23 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
             $table->string('nama_kategori')->unique();
-            $table->string('deskripsi')->nullable(); // Penjelasan singkat kategori alat
-            $table->string('ikon')->nullable(); // Menyimpan class FontAwesome (misal: fa-tent)
+            $table->text('deskripsi')->nullable();
+            $table->string('ikon')->default('fa-tags'); // Menyimpan class FontAwesome
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('kategoris');
@@ -34,3 +28,4 @@ return new class extends Migration
 //     dd($daftarKategori); // <--- TAMBAHKAN BARIS INI SEMENTARA
 //     return view('admin.categories.index', compact('daftarKategori'));
 // };
+};

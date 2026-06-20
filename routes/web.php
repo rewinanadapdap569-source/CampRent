@@ -8,6 +8,7 @@ use App\Http\Controllers\Customer\DashboardController as CustomerDashboard;
 use App\Http\Controllers\Customer\KatalogController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
+use App\Http\Controllers\RentalController;
 
 // Halaman Utama
 Route::get('/', function () { return view('welcome'); })->name('welcome');
@@ -28,6 +29,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('pages.dashboard');
         Route::resource('alat', AlatController::class);
         Route::resource('kategori', KategoriController::class);
+       Route::get('/returns', [RentalController::class, 'indexReturn'])->name('return.index');
+    Route::patch('/returns/{id}/process', [RentalController::class, 'processReturn'])->name('return.process');
     });
 
     // Customer Panel

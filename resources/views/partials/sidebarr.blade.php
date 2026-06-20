@@ -161,12 +161,12 @@
     <span>Kategori</span>
 </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('admin.rental.index') }}" class="menu-item {{ request()->routeIs('admin.rental.*') ? 'active' : '' }}">
             <i class="fa-solid fa-cart-shopping"></i>
             <span>Penyewaan</span>
         </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('return.index') }}" class="menu-item">
             <i class="fa-solid fa-arrow-rotate-left"></i>
             <span>Pengembalian</span>
         </a>
@@ -175,7 +175,7 @@
             <i class="fa-solid fa-credit-card"></i>
             <span>Pembayaran</span>
         </a>
-
+    
         <a href="#" class="menu-item">
             <i class="fa-solid fa-id-card"></i>
             <span>Jaminan</span>
