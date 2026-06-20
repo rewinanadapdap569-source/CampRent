@@ -9,11 +9,15 @@ class Kategori extends Model
 {
     use HasFactory;
 
+    // Menentukan nama tabel secara eksplisit
+    protected $table = 'kategoris';
+
+    // Mendaftarkan kolom yang boleh diisi
     protected $fillable = ['nama_kategori', 'deskripsi', 'ikon'];
 
-    // Relasi ke tabel Alat (Satu kategori bisa memiliki banyak alat camping)
+    // Relasi: Satu kategori bisa dipakai oleh banyak Alat Camping
     public function alats()
     {
-        return $this->hasMany(Alat::class, 'kategori_id'); 
+        return $this->hasMany(Alat::class, 'kategori_id');
     }
 }
