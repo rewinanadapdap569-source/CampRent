@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
+use App\Http\Controllers\RentalController;
 
 // Halaman Utama / Landing Page
 Route::get('/', function () {
@@ -49,4 +50,13 @@ Route::middleware(['auth'])->group(function () {
     });
     
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/rentals', [RentalController::class, 'indexAdmin'])->name('rental.index');
+        Route::get('/rentals/create', [RentalController::class, 'createAdmin'])->name('rental.create');
+        Route::post('/rentals/store', [RentalController::class, 'storeAdmin'])->name('rental.store');
+        Route::patch('/rentals/{id}/status', [RentalController::class, 'updateStatus'])->name('rental.status');
+        Route::get('/rentals/{id}/edit', [RentalController::class, 'editAdmin'])->name('rental.edit');
+        Route::put('/rentals/{id}', [RentalController::class, 'updateAdmin'])->name('rental.update');
+    });
      });
+   
