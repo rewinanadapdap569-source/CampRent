@@ -28,9 +28,9 @@ return new class extends Migration
         Schema::dropIfExists('kategoris');
     }
 };
-public function index()
-{
-    $daftarKategori = Kategori::all();
-    dd($daftarKategori); // <--- TAMBAHKAN BARIS INI SEMENTARA
-    return view('admin.categories.index', compact('daftarKategori'));
-};
+// public function index()
+// {
+//     $daftarKategori = Kategori::all();
+//     dd($daftarKategori); // <--- TAMBAHKAN BARIS INI SEMENTARA
+//     return view('admin.categories.index', compact('daftarKategori'));
+// };
