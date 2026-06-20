@@ -175,7 +175,7 @@
             <i class="fa-solid fa-credit-card"></i>
             <span>Pembayaran</span>
         </a>
-
+    
         <a href="#" class="menu-item">
             <i class="fa-solid fa-id-card"></i>
             <span>Jaminan</span>
