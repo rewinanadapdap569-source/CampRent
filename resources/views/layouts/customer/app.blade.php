@@ -52,9 +52,10 @@
                     <a href="{{ route('customer.dashboard') }}" class="nav-link {{ request()->is('customer/dashboard') ? 'active' : '' }}">
                         <i class="bi bi-speedometer2"></i> Dashboard
                     </a>
-                </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> Katalog Alat</a>
+                    <a href="{{ route('customer.katalog') }}" class="nav-link {{ request()->is('customer/katalog') ? 'active' : '' }}">
+                        <i class="bi bi-box-seam"></i> Katalog Alat
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link"><i class="bi bi-cart3"></i> Keranjang</a>
