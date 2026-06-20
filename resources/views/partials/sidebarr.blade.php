@@ -161,7 +161,7 @@
     <span>Kategori</span>
 </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('admin.rental.index') }}" class="menu-item {{ request()->routeIs('admin.rental.*') ? 'active' : '' }}">
             <i class="fa-solid fa-cart-shopping"></i>
             <span>Penyewaan</span>
         </a>
