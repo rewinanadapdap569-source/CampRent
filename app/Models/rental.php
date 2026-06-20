@@ -9,17 +9,8 @@ class Rental extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id', 'alat_id', 'start_date', 'end_date', 'jumlah_sewa', 'total_harga', 'status'
-    ];
+    protected $fillable = ['user_id', 'alat_id', 'tgl_sewa', 'tgl_kembali', 'jumlah_set', 'total_harga', 'status'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function alat()
-    {
-        return $this->belongsTo(Alat::class);
-    }
+    public function user() { return $this->belongsTo(User::class, 'user_id'); }
+    public function alat() { return $this->belongsTo(Alat::class, 'alat_id'); }
 }

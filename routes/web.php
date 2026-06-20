@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController as AdminDashboard;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboard;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
+use App\Http\Controllers\RentalController;
 
 // Halaman Utama
 Route::get('/', function () { return view('welcome'); })->name('welcome');
