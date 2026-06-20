@@ -28,4 +28,3 @@ return new class extends Migration
 //     dd($daftarKategori); // <--- TAMBAHKAN BARIS INI SEMENTARA
 //     return view('admin.categories.index', compact('daftarKategori'));
 // };
-};
