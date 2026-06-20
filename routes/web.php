@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 // Gunakan alias agar tidak bentrok
 use App\Http\Controllers\DashboardController as AdminDashboard;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboard;
+use App\Http\Controllers\Customer\KatalogController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
 
@@ -31,9 +32,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Customer Panel
     Route::middleware(['role:customer'])->prefix('customer')->group(function () {
-        Route::get('/dashboard', [CustomerDashboard::class, 'index'])->name('customer.dashboard');
-        Route::get('/katalog', [AlatController::class, 'katalogUser'])->name('customer.katalog');
-    });
-
+    Route::get('/dashboard', [CustomerDashboard::class, 'index'])->name('customer.dashboard');
+    Route::get('/katalog', [KatalogController::class, 'index'])->name('customer.katalog');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 });
