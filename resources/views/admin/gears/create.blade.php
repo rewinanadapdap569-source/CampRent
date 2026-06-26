@@ -1,8 +1,5 @@
 @extends('layouts.app')
-
-@section('title', 'Tambah Alat Camping - CampRent')
 @section('page-title', 'Tambah Alat Baru')
-
 @section('content')
 <div class="mb-4">
     <a href="{{ route('alat.index') }}" class="text-decoration-none text-muted small fw-semibold">
@@ -48,33 +45,17 @@
                 @error('stok') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
 
-            <div class="col-12 mb-4">
-                <label class="form-label small fw-bold text-secondary">Unggah Foto Alat</label>
-                <input type="file" name="gambar" id="gambarInput" class="form-control @error('gambar') is-invalid @enderror" accept="image/*" required>
-                <div class="form-text small">Format file: JPG, PNG, WEBP (Maksimal 2MB).</div>
-                @error('gambar') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                
-                <div class="mt-3 text-center d-none" id="previewContainer">
-                    <p class="small text-muted mb-2">Pratinjau Gambar:</p>
-                    <img id="previewGambar" src="#" alt="Preview" class="img-thumbnail" style="max-height: 200px; border-radius: 12px;">
+                <div class="mb-4">
+                    <label class="form-label text-muted">Foto Alat</label>
+                    <input type="file" name="gambar" class="form-control form-control-modern">
                 </div>
-            </div>
-        </div>
 
-        <div class="text-end border-top pt-3">
-            <button type="reset" class="btn btn-light px-4 me-2" style="border-radius: 10px;">Reset</button>
-            <button type="submit" class="btn btn-primary px-5" style="border-radius: 10px; background-color: var(--primary); border: none;">Simpan Data</button>
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('alat.index') }}" class="btn btn-outline-secondary me-2">Batal</a>
+                    <button type="submit" class="btn btn-primary btn-save shadow">Simpan Data</button>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
-
-<script>
-    gambarInput.onchange = evt => {
-        const [file] = gambarInput.files;
-        if (file) {
-            previewGambar.src = URL.createObjectURL(file);
-            previewContainer.classList.remove('d-none');
-        }
-    }
-</script>
 @endsection
