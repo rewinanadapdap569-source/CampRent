@@ -7,7 +7,7 @@ use App\Http\Controllers\DashboardController as AdminDashboard;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboard;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
-use App\Http\Controllers\Customer\KatalogController; // Dipanggil biasa tanpa alias
+use App\Http\Controllers\KatalogController; // Dipanggil biasa tanpa alias
 use App\Http\Controllers\RentalController;
 
 // Halaman Utama
@@ -50,6 +50,8 @@ Route::middleware(['auth'])->group(function () {
         
         // Perbaikan: Memanggil 'KatalogController' sesuai use di atas, gunakan method 'index' atau sesuaikan dengan isi controllermu
         Route::get('/katalog', [KatalogController::class, 'index'])->name('customer.katalog');
+
+        Route::get('/sewa/{id}', [RentalController::class,'create'])->name('customer.form_sewa');
     });
     
 });

@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
         $table->string('nama_alat');
         // Pilihan kategori sesuai di gambar mockup kamu
-        $table->enum('kategori', ['Tenda', 'Carrier', 'Sleeping Bag', 'Kompor', 'Lampu', 'Matras']);
+        $table->foreignId('kategori_id')->constrained('kategoris')->cascadeOnDelete();
         $table->decimal('harga_sewa', 10, 2); // Contoh: 35000.00
         $table->integer('stok');
         $table->enum('status', ['Tersedia', 'Habis'])->default('Tersedia');

@@ -24,13 +24,16 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label small fw-bold text-secondary">Kategori Komponen</label>
-                <select name="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
+               <select name="kategori_id"class="form-select @error('kategori_id') is-invalid @enderror" required>
                     <option value="" disabled selected>Pilih Kategori...</option>
-                    @foreach(['Tenda','Carrier','Sleeping Bag','Kompor','Lampu','Matras'] as $cat)
-                        <option value="{{ $cat }}" {{ old('kategori') == $cat ? 'selected' : '' }}>{{ $cat }}</option>
-                    @endforeach
-                </select>
-                @error('kategori') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    @foreach($kategori as $kat)
+                    <option value="{{ $kat->id }}"{{ old('kategori_id') == $kat->id ? 'selected':'' }}>{{ $kat->nama_kategori }}
+                </option>
+            @endforeach
+            </select>
+            @error('kategori_id')
+            <div class="invalid-feedback">{{ $message }}
+             </div>@enderror
             </div>
 
             <div class="col-md-6 mb-3">

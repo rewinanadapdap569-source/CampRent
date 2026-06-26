@@ -12,10 +12,10 @@ class CustomerController extends Controller
 {
     // Tampilan Katalog Utama Alat Camping
     public function katalog()
-    {
-        $daftarAlat = Alat::where('stok', '>', 0)->get();
-        return view('customer.katalog', compact('daftarAlat'));
-    }
+{
+    $alat = Alat::all();
+    return view('customer.katalog', compact('alat'));
+}
 
     // Menampilkan form pemesanan sewa alat tertentu
     public function formSewa($id)
