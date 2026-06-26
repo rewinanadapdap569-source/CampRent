@@ -1,49 +1,49 @@
 @extends('layouts.app')
 @section('page-title', 'Tambah Alat Baru')
 @section('content')
-<style>
-    .card-modern { border: none; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-    .card-header-modern { background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; padding: 20px; border: none; }
-    .form-control-modern { border-radius: 10px; border: 1px solid #e0e0e0; padding: 12px; transition: 0.3s; }
-    .form-control-modern:focus { border-color: #2e7d32; box-shadow: 0 0 8px rgba(46, 125, 50, 0.2); }
-    .btn-save { border-radius: 10px; padding: 10px 30px; font-weight: 600; background: #2e7d32; border: none; }
-</style>
+<div class="mb-4">
+    <a href="{{ route('alat.index') }}" class="text-decoration-none text-muted small fw-semibold">
+        <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Daftar Alat
+    </a>
+</div>
 
-<div class="container-fluid px-4">
-    <div class="card card-modern">
-        <div class="card-header card-header-modern">
-            <h4 class="mb-0"><i class="fas fa-plus-circle"></i> Tambah Inventaris Baru</h4>
-        </div>
-        <div class="card-body p-4">
-            <form action="{{ route('alat.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Nama Perlengkapan</label>
-                            <input type="text" name="nama_alat" class="form-control form-control-modern" placeholder="Contoh: Tenda Rei Kapasitas 4" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Kategori</label>
-                            <select name="kategori" class="form-control form-control-modern" required>
-                                <option value="">-- Pilih Kategori --</option>
-                                @foreach($kategoris as $kategori)
-                                    <option value="{{ $kategori->nama_kategori }}">{{ $kategori->nama_kategori }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Harga Sewa / Hari (Rp)</label>
-                            <input type="number" name="harga_sewa" class="form-control form-control-modern" placeholder="0" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Stok Barang</label>
-                            <input type="number" name="stok" class="form-control form-control-modern" placeholder="0" required>
-                        </div>
-                    </div>
-                </div>
+<div class="card border-0 p-4 shadow-sm mx-auto" style="border-radius: 20px; max-width: 800px; background: var(--card);">
+    <h5 class="fw-bold mb-4 text-dark"><i class="fa-solid fa-circle-plus text-success me-2"></i>Formulir Data Alat</h5>
+    
+    <form action="{{ route('alat.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label small fw-bold text-secondary">Nama Perlengkapan</label>
+                <input type="text" name="nama_alat" class="form-control @error('nama_alat') is-invalid @enderror" value="{{ old('nama_alat') }}" placeholder="Contoh: Tenda Eiger 4P" required>
+                @error('nama_alat') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label small fw-bold text-secondary">Kategori Komponen</label>
+               <select name="kategori_id"class="form-select @error('kategori_id') is-invalid @enderror" required>
+                    <option value="" disabled selected>Pilih Kategori...</option>
+                    @foreach($kategori as $kat)
+                    <option value="{{ $kat->id }}"{{ old('kategori_id') == $kat->id ? 'selected':'' }}>{{ $kat->nama_kategori }}
+                </option>
+            @endforeach
+            </select>
+            @error('kategori_id')
+            <div class="invalid-feedback">{{ $message }}
+             </div>@enderror
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label small fw-bold text-secondary">Harga Sewa per Hari (Rp)</label>
+                <input type="number" name="harga_sewa" class="form-control @error('harga_sewa') is-invalid @enderror" value="{{ old('harga_sewa') }}" placeholder="Contoh: 45000" min="0" required>
+                @error('harga_sewa') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label small fw-bold text-secondary">Jumlah Stok Fisik</label>
+                <input type="number" name="stok" class="form-control @error('stok') is-invalid @enderror" value="{{ old('stok') }}" placeholder="Contoh: 12" min="0" required>
+                @error('stok') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
 
                 <div class="mb-4">
                     <label class="form-label text-muted">Foto Alat</label>

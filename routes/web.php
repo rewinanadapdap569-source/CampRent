@@ -6,7 +6,7 @@ use App\Http\Controllers\DashboardController as AdminDashboard;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboard;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
-use App\Http\Controllers\Customer\KatalogController;
+use App\Http\Controllers\KatalogController; // Dipanggil biasa tanpa alias
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\PaymentController;
 
@@ -54,5 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:customer'])->prefix('customer')->group(function () {
         Route::get('/dashboard', [CustomerDashboard::class, 'index'])->name('customer.dashboard');
         Route::get('/katalog', [KatalogController::class, 'index'])->name('customer.katalog');
+
+        Route::get('/sewa/{id}', [RentalController::class,'create'])->name('customer.form_sewa');
     });
 });

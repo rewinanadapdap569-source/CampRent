@@ -14,9 +14,9 @@ return new class extends Migration
     Schema::create('alats', function (Blueprint $table) {
         $table->id();
         $table->string('nama_alat');
-        // Ubah dari enum ke string agar bisa menerima kategori baru
-        $table->string('kategori'); 
-        $table->decimal('harga_sewa', 10, 2);
+        // Pilihan kategori sesuai di gambar mockup kamu
+        $table->foreignId('kategori_id')->constrained('kategoris')->cascadeOnDelete();
+        $table->decimal('harga_sewa', 10, 2); // Contoh: 35000.00
         $table->integer('stok');
         $table->string('status')->default('Tersedia');
         $table->string('gambar')->nullable();

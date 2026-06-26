@@ -3,99 +3,334 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alat;
-use App\Models\Kategori; // Pastikan model ini diimpor
+use App\Models\Kategori;
 use Illuminate\Http\Request;
+
 
 class AlatController extends Controller
 {
+
+    /**
+     * Menampilkan daftar alat admin
+     */
     public function index()
     {
-        $daftarAlat = Alat::all();
-        return view('admin.gears.index', compact('daftarAlat'));
+
+        $daftarAlat = Alat::with('kategori')->get();
+
+
+        return view(
+            'admin.gears.index',
+            compact('daftarAlat')
+        );
+
     }
 
+
+
+    /**
+     * Form tambah alat
+     */
     public function create()
     {
-        // MENGAMBIL DATA KATEGORI UNTUK DROPDOWN
-        $kategoris = Kategori::all(); 
-        return view('admin.gears.create', compact('kategoris'));
+
+        $kategori = Kategori::all();
+
+
+        return view(
+            'admin.gears.create',
+            compact('kategori')
+        );
+
     }
 
+
+
+    /**
+     * Simpan alat baru
+     */
     public function store(Request $request)
     {
+
+
         $request->validate([
-            'nama_alat'   => 'required|string|max:255',
-            'kategori'    => 'required', 
-            'harga_sewa'  => 'required|numeric|min:0',
-            'stok'        => 'required|integer|min:0',
-            'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+
+            'nama_alat' => 'required|string|max:255',
+
+            'kategori_id' => 'required|exists:kategoris,id',
+
+            'harga_sewa' => 'required|numeric|min:0',
+
+            'stok' => 'required|integer|min:0',
+
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+
         ]);
+
+
 
         $namaGambar = null;
-        if ($request->hasFile('gambar')) {
+
+
+        if($request->hasFile('gambar')){
+
+
             $file = $request->file('gambar');
-            $namaGambar = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('images/alat'), $namaGambar);
+
+
+            $namaGambar = time().'_'.$file->getClientOriginalName();
+
+
+            $file->move(
+                public_path('images/alat'),
+                $namaGambar
+            );
+
         }
+
+
 
         Alat::create([
-            'nama_alat'   => $request->nama_alat,
-            'kategori'    => $request->kategori,
-            'harga_sewa'  => $request->harga_sewa,
-            'stok'        => $request->stok,
-            'status'      => $request->stok > 0 ? 'Tersedia' : 'Kosong',
-            'gambar'      => $namaGambar
+
+
+            'nama_alat' => $request->nama_alat,
+
+
+            'kategori_id' => $request->kategori_id,
+
+
+            'harga_sewa' => $request->harga_sewa,
+
+
+            'stok' => $request->stok,
+
+
+            'status' => $request->stok > 0 
+                        ? 'Tersedia' 
+                        : 'Habis',
+
+
+            'gambar' => $namaGambar
+
+
         ]);
 
-        return redirect()->route('alat.index')->with('success', 'Alat berhasil ditambahkan!');
+
+
+
+        return redirect()
+            ->route('alat.index')
+            ->with(
+                'success',
+                'Alat camping berhasil ditambahkan!'
+            );
+
     }
 
+
+
+
+
+    /**
+     * Form edit alat
+     */
     public function edit($id)
     {
+
+
         $alat = Alat::findOrFail($id);
-        $kategoris = Kategori::all(); // Tambahkan ini agar edit juga bisa ganti kategori
-        return view('admin.gears.edit', compact('alat', 'kategoris'));
+
+
+        $kategori = Kategori::all();
+
+
+
+        return view(
+            'admin.gears.edit',
+            compact(
+                'alat',
+                'kategori'
+            )
+        );
+
     }
 
-    public function update(Request $request, $id)
+
+
+
+    /**
+     * Update alat
+     */
+    public function update(Request $request,$id)
     {
+
+
         $alat = Alat::findOrFail($id);
+
+
 
         $request->validate([
-            'nama_alat'   => 'required|string|max:255',
-            'kategori'    => 'required',
-            'harga_sewa'  => 'required|numeric|min:0',
-            'stok'        => 'required|integer|min:0',
+
+
+            'nama_alat' => 'required|string|max:255',
+
+
+            'kategori_id' => 'required|exists:kategoris,id',
+
+
+            'harga_sewa' => 'required|numeric|min:0',
+
+
+            'stok' => 'required|integer|min:0',
+
+
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
+
+
         ]);
 
-        if ($request->hasFile('gambar')) {
-            if ($alat->gambar && file_exists(public_path('images/alat/' . $alat->gambar))) {
-                unlink(public_path('images/alat/' . $alat->gambar));
+
+
+
+        if($request->hasFile('gambar')){
+
+
+            if(
+                $alat->gambar &&
+                file_exists(
+                    public_path('images/alat/'.$alat->gambar)
+                )
+            ){
+
+                unlink(
+                    public_path('images/alat/'.$alat->gambar)
+                );
+
             }
+
+
+
+
             $file = $request->file('gambar');
-            $namaGambar = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('images/alat'), $namaGambar);
+
+
+            $namaGambar =
+            time().'_'.$file->getClientOriginalName();
+
+
+
+            $file->move(
+                public_path('images/alat'),
+                $namaGambar
+            );
+
+
+
             $alat->gambar = $namaGambar;
+
         }
 
-        $alat->update([
-            'nama_alat'   => $request->nama_alat,
-            'kategori'    => $request->kategori,
-            'harga_sewa'  => $request->harga_sewa,
-            'stok'        => $request->stok,
-            'status'      => $request->stok > 0 ? 'Tersedia' : 'Habis',
-        ]);
 
-        return redirect()->route('alat.index')->with('success', 'Data diperbarui!');
+
+
+        $alat->nama_alat = $request->nama_alat;
+
+
+        $alat->kategori_id = $request->kategori_id;
+
+
+        $alat->harga_sewa = $request->harga_sewa;
+
+
+        $alat->stok = $request->stok;
+
+
+        $alat->status = $request->stok > 0
+                        ? 'Tersedia'
+                        : 'Habis';
+
+
+
+        $alat->save();
+
+
+
+
+        return redirect()
+            ->route('alat.index')
+            ->with(
+                'success',
+                'Data alat berhasil diperbarui!'
+            );
+
     }
 
+
+
+
+
+    /**
+     * Hapus alat
+     */
     public function destroy($id)
     {
+
+
         $alat = Alat::findOrFail($id);
-        if ($alat->gambar && file_exists(public_path('images/alat/' . $alat->gambar))) {
-            unlink(public_path('images/alat/' . $alat->gambar));
+
+
+
+        if(
+            $alat->gambar &&
+            file_exists(
+                public_path('images/alat/'.$alat->gambar)
+            )
+        ){
+
+            unlink(
+                public_path('images/alat/'.$alat->gambar)
+            );
+
         }
+
+
+
         $alat->delete();
-        return redirect()->route('alat.index')->with('success', 'Alat dihapus!');
+
+
+
+        return redirect()
+            ->route('alat.index')
+            ->with(
+                'success',
+                'Alat berhasil dihapus!'
+            );
+
     }
+
+
+
+
+
+    /**
+     * Katalog customer
+     */
+    public function katalogUser()
+    {
+
+
+        $katalogAlat = Alat::with('kategori')
+            ->where('stok','>',0)
+            ->get();
+
+
+
+        return view(
+            'landing.katalog',
+            compact('katalogAlat')
+        );
+
+    }
+
+
 }
