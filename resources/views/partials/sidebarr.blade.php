@@ -171,7 +171,7 @@
             <span>Pengembalian</span>
         </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('pembayaran.index') }}" class="menu-item">
             <i class="fa-solid fa-credit-card"></i>
             <span>Pembayaran</span>
         </a>
