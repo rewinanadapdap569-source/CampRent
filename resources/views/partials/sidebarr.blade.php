@@ -176,7 +176,7 @@
             <span>Pembayaran</span>
         </a>
     
-        <a href="#" class="menu-item">
+        <a href="{{ route('jaminan.index') }}" class="menu-item">
             <i class="fa-solid fa-id-card"></i>
             <span>Jaminan</span>
         </a>

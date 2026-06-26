@@ -9,6 +9,7 @@ use App\Http\Controllers\AlatController;
 use App\Http\Controllers\KatalogController; // Dipanggil biasa tanpa alias
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\JaminanController;
 
 // Halaman Utama
 Route::get('/', function () { return view('welcome'); })->name('welcome');
@@ -48,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pembayaran', [PaymentController::class, 'index'])->name('pembayaran.index');
         Route::get('/pembayaran/create', [PaymentController::class, 'create'])->name('pembayaran.create');
         Route::post('/pembayaran', [PaymentController::class, 'store'])->name('pembayaran.store'); 
+        Route::resource('jaminan', JaminanController::class);
     });
 
     // Customer Panel
