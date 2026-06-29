@@ -171,17 +171,17 @@
             <span>Pengembalian</span>
         </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('pembayaran.index') }}" class="menu-item">
             <i class="fa-solid fa-credit-card"></i>
             <span>Pembayaran</span>
         </a>
     
-        <a href="#" class="menu-item">
+        <a href="{{ route('jaminan.index') }}" class="menu-item">
             <i class="fa-solid fa-id-card"></i>
             <span>Jaminan</span>
         </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('pelanggan.index') }}" class="menu-item">
             <i class="fa-solid fa-users"></i>
             <span>Pelanggan</span>
         </a>

@@ -12,10 +12,10 @@ class CustomerController extends Controller
 {
     // Tampilan Katalog Utama Alat Camping
     public function katalog()
-    {
-        $daftarAlat = Alat::where('stok', '>', 0)->get();
-        return view('customer.katalog', compact('daftarAlat'));
-    }
+{
+    $alat = Alat::all();
+    return view('customer.katalog', compact('alat'));
+}
 
     // Menampilkan form pemesanan sewa alat tertentu
     public function formSewa($id)
@@ -24,46 +24,45 @@ class CustomerController extends Controller
         return view('customer.form_sewa', compact('alat'));
     }
 
-    // Memproses data input sewa dan menyimpannya ke database (CREATE)
-    public function prosesSewa(Request $request)
-    {
-        $request->validate([
-            'alat_id' => 'required|exists:alats,id',
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after:start_date',
-            'jumlah_sewa' => 'required|integer|min:1',
-        ]);
+   public function prosesSewa(Request $request)
+{
+    $request->validate([
+        'alat_id' => 'required|exists:alats,id',
+        'start_date' => 'required|date|after_or_equal:today',
+        'end_date' => 'required|date|after:start_date',
+        'jumlah_sewa' => 'required|integer|min:1',
+    ]);
 
-        $alat = Alat::findOrFail($request->alat_id);
+    $alat = Alat::findOrFail($request->alat_id);
 
-        if ($request->jumlah_sewa > $alat->stok) {
-            return back()->withErrors(['jumlah_sewa' => 'Stok alat tidak mencukupi!']);
-        }
-
-        // Hitung total hari sewa
-        $startDate = Carbon::parse($request->start_date);
-        $endDate = Carbon::parse($request->end_date);
-        $totalHari = $startDate->diffInDays($endDate);
-
-        // Hitung total harga
-        $totalHarga = $totalHari * $alat->harga_sewa * $request->jumlah_sewa;
-
-        // Simpan Transaksi Sewa
-        Rental::create([
-            'user_id' => Auth::id(),
-            'alat_id' => $request->alat_id,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'jumlah_sewa' => $request->jumlah_sewa,
-            'total_harga' => $totalHarga,
-            'status' => 'Diproses',
-        ]);
-
-        // Kurangi stok alat camping
-        $alat->decrement('stok', $request->jumlah_sewa);
-
-        return redirect()->route('customer.riwayat')->with('success', 'Pesanan rental berhasil dibuat! Menunggu konfirmasi admin.');
+    if ($request->jumlah_sewa > $alat->stok) {
+        return back()->withErrors(['jumlah_sewa' => 'Stok alat tidak mencukupi!']);
     }
+
+    // Hitung total hari sewa
+    $startDate = Carbon::parse($request->start_date);
+    $endDate = Carbon::parse($request->end_date);
+    $totalHari = $startDate->diffInDays($endDate);
+    if($totalHari == 0) $totalHari = 1; // Minimal 1 hari sewa
+
+    $totalHarga = $alat->harga_sewa * $request->jumlah_sewa * $totalHari;
+
+    // SIMPAN MENGGUNAKAN NAMA KOLOM TABEL RENTALS KAMU YANG SUDAH ADA
+    Rental::create([
+        'user_id' => Auth::id(),
+        'alat_id' => $request->alat_id,
+        'tgl_sewa' => $request->start_date,      // Menyesuaikan ke tgl_sewa
+        'tgl_kembali' => $request->end_date,    // Menyesuaikan ke tgl_kembali
+        'jumlah_set' => $request->jumlah_sewa,   // Menyesuaikan ke jumlah_set
+        'total_harga' => $totalHarga,
+        'status' => 'Diproses',                  // Otomatis berstatus Diproses agar di-approve Admin
+    ]);
+
+    // Kurangi stok alat camping milik admin
+    $alat->decrement('stok', $request->jumlah_sewa);
+
+    return redirect()->route('customer.dashboard')->with('success', 'Pesanan rental berhasil dibuat! Menunggu konfirmasi admin.');
+}
 
     // Menampilkan riwayat transaksi milik customer tersebut (READ)
     public function riwayatSewa()

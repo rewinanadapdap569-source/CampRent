@@ -10,9 +10,13 @@
     @endif
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-dark">Katalog Alat</h2>
-        <div class="input-group w-25">
-            <input type="text" class="form-control" placeholder="Cari alat...">
+        <div>
+            <h2 class="fw-bold text-dark mb-1">Katalog Alat Camping</h2>
+            <p class="text-muted small mb-0">Pilih perlengkapan camping terbaik untuk petualangan Anda.</p>
+        </div>
+        <div class="input-group w-25 shadow-sm rounded-3 overflow-hidden">
+            <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0 text-dark" placeholder="Cari alat camping...">
         </div>
     </div>
     
@@ -123,8 +127,11 @@
         </div>
         @empty
         <div class="col-12 text-center py-5">
-            <i class="bi bi-box-seam display-1 text-muted"></i>
-            <h4 class="text-muted mt-3">Ups, katalog masih kosong.</h4>
+            <div class="p-5 mx-auto bg-white shadow-sm" style="max-width: 500px; border-radius: 20px;">
+                <i class="bi bi-box-seam display-1 text-muted opacity-30"></i>
+                <h4 class="text-dark fw-bold mt-4">Katalog Perlengkapan Kosong</h4>
+                <p class="text-muted small">Saat ini belum ada alat camping milik admin yang siap atau tersedia untuk disewakan.</p>
+            </div>
         </div>
         @endforelse
     </div>
