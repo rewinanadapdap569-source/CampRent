@@ -8,9 +8,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
 use App\Http\Controllers\KatalogController; 
 use App\Http\Controllers\RentalController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\JaminanController;
-use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\Customer\PemesananController;
 
 // Halaman Utama
 Route::get('/', function () { return view('welcome'); })->name('welcome');
@@ -60,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:customer'])->prefix('customer')->group(function () {
         Route::get('/dashboard', [CustomerDashboard::class, 'index'])->name('customer.dashboard');
         Route::get('/katalog', [KatalogController::class, 'index'])->name('customer.katalog');
-        Route::get('/sewa/{id}', [RentalController::class,'create'])->name('customer.form_sewa');
+        Route::post('/penyewaan/store', [PemesananController::class, 'store'])->name('penyewaan.store');
+    Route::get('/penyewaan', [PemesananController::class, 'index'])->name('penyewaan.index');
     });
 });
