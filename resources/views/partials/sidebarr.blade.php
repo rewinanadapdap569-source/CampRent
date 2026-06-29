@@ -181,7 +181,7 @@
             <span>Jaminan</span>
         </a>
 
-        <a href="#" class="menu-item">
+        <a href="{{ route('pelanggan.index') }}" class="menu-item">
             <i class="fa-solid fa-users"></i>
             <span>Pelanggan</span>
         </a>
