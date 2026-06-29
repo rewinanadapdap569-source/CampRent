@@ -81,4 +81,48 @@ class PemesananController extends Controller
 
         return redirect()->route('penyewaan.index')->with('success', 'Booking berhasil dibuat!');
     }
+
+    public function riwayat()
+{
+    // Mengambil data sewa milik user login yang statusnya 'Selesai' atau 'Dibatalkan'
+    $riwayat = Penyewaan::with('alat')
+        ->where('user_id', Auth::id())
+        ->whereIn('status', ['Selesai', 'Dibatalkan']) // Memfilter data masa lalu
+        ->orderBy('updated_at', 'desc')
+        ->get();
+
+    return view('customer.riwayat', compact('riwayat'));
+}
+
+    public function profil()
+{
+    // Mengambil data user yang sedang login
+    $user = Auth::user();
+    return view('customer.profil', compact('user'));
+}
+
+    public function profilUpdate(Request $request)
+    {
+        $user = \App\Models\User::findOrFail(Auth::id());
+
+        // Validasi data inputan
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed', // password opsional (diisi jika ingin ganti)
+        ]);
+
+        // Update data dasar
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // Jika password baru diisi, maka update passwordnya
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profil Anda berhasil diperbarui!');
+    }
 }
