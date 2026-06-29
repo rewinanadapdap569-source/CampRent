@@ -50,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [CustomerDashboard::class, 'index'])->name('customer.dashboard');
         Route::get('/katalog', [KatalogController::class, 'index'])->name('customer.katalog');
         Route::post('/penyewaan/store', [PemesananController::class, 'store'])->name('penyewaan.store');
-    Route::get('/penyewaan', [PemesananController::class, 'index'])->name('penyewaan.index');
+        Route::get('/penyewaan', [PemesananController::class, 'index'])->name('penyewaan.index');
+        Route::get('/riwayat', [PemesananController::class, 'riwayat'])->name('penyewaan.riwayat');
+        Route::get('/profil', [PemesananController::class, 'profil'])->name('customer.profil');
+    Route::put('/profil/update', [PemesananController::class, 'profilUpdate'])->name('customer.profil.update');
     });
 });
