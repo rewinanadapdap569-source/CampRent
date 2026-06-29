@@ -6,10 +6,11 @@ use App\Http\Controllers\DashboardController as AdminDashboard;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboard;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
-use App\Http\Controllers\KatalogController; // Dipanggil biasa tanpa alias
+use App\Http\Controllers\KatalogController; 
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\JaminanController;
+use App\Http\Controllers\PelangganController;
 
 // Halaman Utama
 Route::get('/', function () { return view('welcome'); })->name('welcome');
@@ -33,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('alat', AlatController::class);
         Route::resource('kategori', KategoriController::class);
         
+        // Rute Pelanggan (Sudah ditambahkan)
+        Route::resource('pelanggan', PelangganController::class);
+        
         // Rental Admin
         Route::get('/rentals', [RentalController::class, 'indexAdmin'])->name('admin.rental.index');
         Route::get('/rentals/create', [RentalController::class, 'createAdmin'])->name('admin.rental.create');
@@ -45,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/returns', [RentalController::class, 'indexReturn'])->name('return.index');
         Route::patch('/returns/{id}/process', [RentalController::class, 'processReturn'])->name('return.process');
 
-        // Pembayaran (Sudah digabung ke dalam prefix admin)
+        // Pembayaran 
         Route::get('/pembayaran', [PaymentController::class, 'index'])->name('pembayaran.index');
         Route::get('/pembayaran/create', [PaymentController::class, 'create'])->name('pembayaran.create');
         Route::post('/pembayaran', [PaymentController::class, 'store'])->name('pembayaran.store'); 
@@ -56,7 +60,6 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:customer'])->prefix('customer')->group(function () {
         Route::get('/dashboard', [CustomerDashboard::class, 'index'])->name('customer.dashboard');
         Route::get('/katalog', [KatalogController::class, 'index'])->name('customer.katalog');
-
         Route::get('/sewa/{id}', [RentalController::class,'create'])->name('customer.form_sewa');
     });
 });

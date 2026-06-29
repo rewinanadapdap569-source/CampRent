@@ -20,22 +20,26 @@ class AuthController extends Controller
     }
 
     // 2. Memproses Pendaftaran User Baru
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'nohp' => ['required', 'string', 'max:20'],
-        ]);
+   public function register(Request $request)
+{
+    // 1. Simpan ke tabel Users
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email, // Email masuk ke sini
+        'password' => Hash::make($request->password),
+        'role' => 'customer',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'nohp' => $request->nohp,
-            'role' => 'customer', // Default pendaftar baru adalah customer
-        ]);
+    // 2. Simpan ke tabel Pelanggans (Hubungkan dengan user_id)
+    \App\Models\Pelanggan::create([
+        'user_id' => $user->id,
+        'nama'    => $request->name,
+        'no_hp'   => $request->no_hp,
+        'alamat'  => $request->alamat,
+    ]);
+
+   
+
 
         // Otomatis login setelah berhasil mendaftar
         Auth::login($user);
