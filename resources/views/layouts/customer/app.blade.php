@@ -63,7 +63,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link"><i class="bi bi-clock-history"></i> Riwayat</a>
+                    <a href="{{ route('penyewaan.riwayat') }}" class="nav-link">
+                        <i class="bi bi-clock-history"></i> Riwayat Sewa
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('customer.profil') }}" class="nav-link">
+                        <i class="bi bi-person-circle"></i> Profil Saya
+                    </a>
                 </li>
                 <li class="nav-item mt-5">
                     <a href="#" class="nav-link text-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
