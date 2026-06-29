@@ -9,6 +9,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\AlatController;
 use App\Http\Controllers\Customer\KatalogController; // Dipanggil biasa tanpa alias
 use App\Http\Controllers\RentalController;
+use App\Http\Controllers\Customer\PemesananController;
 
 // Halaman Utama
 Route::get('/', function () { return view('welcome'); })->name('welcome');
@@ -47,9 +48,8 @@ Route::middleware(['auth'])->group(function () {
     // Customer Panel
     Route::middleware(['role:customer'])->prefix('customer')->group(function () {
         Route::get('/dashboard', [CustomerDashboard::class, 'index'])->name('customer.dashboard');
-        
-        // Perbaikan: Memanggil 'KatalogController' sesuai use di atas, gunakan method 'index' atau sesuaikan dengan isi controllermu
         Route::get('/katalog', [KatalogController::class, 'index'])->name('customer.katalog');
+        Route::post('/penyewaan/store', [PemesananController::class, 'store'])->name('penyewaan.store');
+    Route::get('/penyewaan', [PemesananController::class, 'index'])->name('penyewaan.index');
     });
-    
 });
